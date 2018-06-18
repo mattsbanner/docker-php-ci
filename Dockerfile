@@ -4,11 +4,26 @@ MAINTAINER Enovate Design Ltd (Michael Walsh)
 
 ENV DEBIAN_FRONTEND noninteractive
 
+# Versions
+
+ENV COMPOSER_VERSION 1.6.5
+ENV NODE_VERSION 9.4.0
+ENV YARN_VERSION 1.3.2
+ENV PHP_VERSION 7.2
+
 # Base setup
 
 RUN apt-get update \
+    && apt-get install -y locales \
+    && locale-gen en_GB.UTF-8
+
+ENV LANG en_GB.UTF-8
+ENV LANGUAGE en_GB:en
+ENV LC_ALL en_GB.UTF-8
+
+RUN apt-get update \
     && apt-get update >/dev/null \
-    && apt-get install -y git unzip curl build-essential python make g++ libfontconfig
+    && apt-get install -y nginx git zip unzip curl build-essential python make g++ libfontconfig software-properties-common rsync
 
 # Install NodeJS
 
@@ -32,8 +47,6 @@ RUN set -ex \
     gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$key" ; \
   done
 
-ENV NODE_VERSION 9.4.0
-
 RUN ARCH= && dpkgArch="$(dpkg --print-architecture)" \
   && case "${dpkgArch##*-}" in \
     amd64) ARCH='x64';; \
@@ -54,8 +67,6 @@ RUN ARCH= && dpkgArch="$(dpkg --print-architecture)" \
 
 # Install Yarn
 
-ENV YARN_VERSION 1.3.2
-
 RUN set -ex \
   && for key in \
     6A010C5166006599AA17F08146C2130DFD2497F5 \
@@ -75,13 +86,43 @@ RUN set -ex \
 
 CMD [ "node" ]
 
-# Install Meteor
+# Install PHP, Composer, PHP extensions and configure Nginx
 
-RUN curl -sL https://install.meteor.com/ | sh
+RUN add-apt-repository -y ppa:ondrej/php \
+    && apt-get update \
+    && apt-get install -y \
+        php$PHP_VERSION-fpm \
+        php-pear \
+        php-intl \
+        libmagickwand-dev \
+        imagemagick \
+        php-dev \
+        php$PHP_VERSION-curl \
+        php$PHP_VERSION-dev \
+        php$PHP_VERSION-mbstring \
+        php$PHP_VERSION-zip \
+        php$PHP_VERSION-mysql \
+        php$PHP_VERSION-xml \
+    && pecl install imagick \
+    && php -r "readfile('https://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer --version=${COMPOSER_VERSION} \
+    && mkdir /run/php \
+    && apt-get remove -y --purge software-properties-common \
+    && apt-get -y autoremove \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+    && echo "daemon off;" >> /etc/nginx/nginx.conf \
+    && ln -sf /dev/stdout /var/log/nginx/access.log \
+    && ln -sf /dev/stderr /var/log/nginx/error.log
 
-# Install Mup
+COPY nginx-default /etc/nginx/sites-available/default
+COPY php-fpm.conf /etc/php/$PHP_VERSION/fpm/php-fpm.conf
+COPY php.ini /etc/php/$PHP_VERSION/fpm/conf.d/99-php.ini
 
-RUN npm i -g mup
+# Install Deployer
+
+RUN curl -LO https://deployer.org/deployer.phar
+RUN mv deployer.phar /usr/local/bin/dep
+RUN chmod +x /usr/local/bin/dep
 
 # Install Puppeteer depedencies
 
