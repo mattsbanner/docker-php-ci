@@ -29,7 +29,7 @@ RUN apt-get update \
 RUN curl -sL https://deb.nodesource.com/setup_$NODE_VERSION -o nodesource_setup.sh \
     && bash ./nodesource_setup.sh \
     && apt-get update \
-    && apt-get install nodejs
+    && apt-get install -y nodejs
 
 CMD [ "node" ]
 
