@@ -8,7 +8,7 @@ ENV DEBIAN_FRONTEND noninteractive
 
 ENV COMPOSER_VERSION 1.6.5
 ENV NODE_VERSION 9.x
-ENV PHP_VERSION 7.0
+ENV PHP_VERSION 7.1
 
 # Base setup and install dependencies
 
