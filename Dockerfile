@@ -3,6 +3,7 @@ FROM ubuntu:16.04
 MAINTAINER Enovate Design Ltd (Michael Walsh)
 
 ENV DEBIAN_FRONTEND noninteractive
+ENV COMPOSER_ALLOW_SUPERUSER 1
 
 # Versions
 
