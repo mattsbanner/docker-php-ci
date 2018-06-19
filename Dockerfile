@@ -70,11 +70,11 @@ COPY php.ini /etc/php/$PHP_VERSION/fpm/conf.d/99-php.ini
 
 # Install Deployer globally via Composer
 
-RUN php composer.phar global require deployer/deployer
+RUN composer global require deployer/deployer
 
 # Install AWS SDK PHP globally via Composer
 
-RUN php composer.phar global require aws/aws-sdk-php
+RUN composer global require aws/aws-sdk-php
 
 # Install Gulp.js globally
 
