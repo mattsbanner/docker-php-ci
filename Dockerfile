@@ -9,21 +9,13 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV COMPOSER_VERSION 1.6.5
 ENV NODE_VERSION 9.4.0
 ENV YARN_VERSION 1.3.2
-ENV PHP_VERSION 7.2
+ENV PHP_VERSION 7.0
 
 # Base setup
 
 RUN apt-get update \
-    && apt-get install -y locales \
-    && locale-gen en_GB.UTF-8
-
-ENV LANG en_GB.UTF-8
-ENV LANGUAGE en_GB:en
-ENV LC_ALL en_GB.UTF-8
-
-RUN apt-get update \
     && apt-get update >/dev/null \
-    && apt-get install -y nginx git zip unzip curl build-essential python make g++ libfontconfig software-properties-common rsync acl
+    && apt-get install -y nginx git zip unzip curl build-essential python make g++ libfontconfig software-properties-common rsync acl zlib1g-dev
 
 # Install NodeJS
 
@@ -124,6 +116,6 @@ RUN curl -LO https://deployer.org/deployer.phar
 RUN mv deployer.phar /usr/local/bin/dep
 RUN chmod +x /usr/local/bin/dep
 
-# Install Gulp.js
+# Install Gulp.js globally
 
 RUN npm i -g gulp
