@@ -68,11 +68,13 @@ COPY nginx-default /etc/nginx/sites-available/default
 COPY php-fpm.conf /etc/php/$PHP_VERSION/fpm/php-fpm.conf
 COPY php.ini /etc/php/$PHP_VERSION/fpm/conf.d/99-php.ini
 
-# Install Deployer
+# Install Deployer globally via Composer
 
-RUN curl -LO https://deployer.org/deployer.phar \
-    && mv deployer.phar /usr/local/bin/dep \
-    && chmod +x /usr/local/bin/dep
+RUN php composer.phar global require deployer/deployer
+
+# Install AWS SDK PHP globally via Composer
+
+RUN php composer.phar global require aws/aws-sdk-php
 
 # Install Gulp.js globally
 
