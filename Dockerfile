@@ -68,9 +68,11 @@ COPY nginx-default /etc/nginx/sites-available/default
 COPY php-fpm.conf /etc/php/$PHP_VERSION/fpm/php-fpm.conf
 COPY php.ini /etc/php/$PHP_VERSION/fpm/conf.d/99-php.ini
 
-# Install Deployer globally via Composer
+# Install Deployer
 
-RUN composer global require deployer/deployer
+RUN curl -LO https://deployer.org/deployer.phar \
+    && mv deployer.phar /usr/local/bin/dep \
+    && chmod +x /usr/local/bin/dep
 
 # Install AWS SDK PHP globally via Composer
 
