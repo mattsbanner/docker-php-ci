@@ -13,6 +13,14 @@ ENV PHP_VERSION 7.1
 # Base setup and install dependencies
 
 RUN apt-get update \
+    && apt-get install -y locales \
+    && locale-gen en_US.UTF-8
+
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
+
+RUN apt-get update \
     && apt-get update >/dev/null \
     && apt-get install -y nginx git zip unzip curl build-essential python make g++ libfontconfig software-properties-common rsync acl zlib1g-dev
 
