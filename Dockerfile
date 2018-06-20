@@ -79,6 +79,10 @@ RUN curl -LO https://deployer.org/deployer.phar \
 
 RUN composer global require aws/aws-sdk-php
 
+# Install Iconv polyfill globally
+
+RUN composer global require symfony/polyfill-iconv
+
 # Install Gulp.js globally
 
 RUN npm i -g gulp
