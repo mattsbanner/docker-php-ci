@@ -100,4 +100,4 @@ RUN composer global require symfony/polyfill-iconv
 RUN npm i -g gulp
 
 # Set command-line version of PHP to preferred version
-sudo update-alternatives --set php /usr/bin/php$PHP_VERSION
+RUN update-alternatives --set php /usr/bin/php$PHP_VERSION
