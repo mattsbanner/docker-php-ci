@@ -23,7 +23,7 @@ ENV LC_ALL en_US.UTF-8
 
 RUN apt-get update \
     && apt-get update >/dev/null \
-    && apt-get install -y nginx git zip unzip curl build-essential python make g++ libfontconfig software-properties-common rsync acl zlib1g-dev
+    && apt-get install -y nginx git zip unzip curl build-essential python make g++ libfontconfig software-properties-common rsync acl zlib1g-dev apt-utils
 
 # Install NodeJS
 
@@ -74,6 +74,18 @@ COPY php.ini /etc/php/$PHP_VERSION/fpm/conf.d/99-php.ini
 RUN curl -LO https://deployer.org/deployer.phar \
     && mv deployer.phar /usr/local/bin/dep \
     && chmod +x /usr/local/bin/dep
+
+# Install PHPUnit
+
+RUN curl -LO https://phar.phpunit.de/phpunit-7.phar \
+    && mv phpunit-7.phar /usr/local/bin/phpunit \
+    && chmod +x /usr/local/bin/phpunit
+
+# Install Codeception
+
+RUN curl -LO https://codeception.com/codecept.phar \
+    && mv codecept.phar /usr/local/bin/codecept \
+    && chmod +x /usr/local/bin/codecept
 
 # Install AWS SDK PHP globally via Composer
 
