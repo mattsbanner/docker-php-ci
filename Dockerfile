@@ -46,6 +46,7 @@ RUN add-apt-repository -y ppa:ondrej/php \
         imagemagick \
         php-dev \
         php-xml \
+        php$PHP_VERSION-xdebug \
         php$PHP_VERSION-curl \
         php$PHP_VERSION-dev \
         php$PHP_VERSION-mbstring \
@@ -69,6 +70,7 @@ RUN add-apt-repository -y ppa:ondrej/php \
 COPY nginx-default /etc/nginx/sites-available/default
 COPY php-fpm.conf /etc/php/$PHP_VERSION/fpm/php-fpm.conf
 COPY php.ini /etc/php/$PHP_VERSION/fpm/conf.d/99-php.ini
+COPY xdebug.ini /etc/php/$PHP_VERSION/mods-available/xdebug.ini
 
 # Install Deployer
 
