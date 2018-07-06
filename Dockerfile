@@ -23,7 +23,7 @@ ENV LC_ALL en_US.UTF-8
 
 RUN apt-get update \
     && apt-get update >/dev/null \
-    && apt-get install -y nginx git zip unzip curl build-essential python make g++ libfontconfig software-properties-common rsync acl zlib1g-dev apt-utils
+    && apt-get install -y nginx git zip unzip curl build-essential python make g++ libfontconfig software-properties-common rsync acl zlib1g-dev apt-utils sqlite3 libsqlite3-dev
 
 # Install NodeJS
 
@@ -54,6 +54,7 @@ RUN add-apt-repository -y ppa:ondrej/php \
         php$PHP_VERSION-mysql \
         php$PHP_VERSION-xml \
         php$PHP_VERSION-gd \
+        php$PHP_VERSION-sqlite3 \
     && pecl install imagick \
     && php -r "readfile('https://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer --version=${COMPOSER_VERSION} \
     && mkdir /run/php \
