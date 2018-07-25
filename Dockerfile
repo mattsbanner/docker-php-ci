@@ -23,7 +23,8 @@ ENV LC_ALL en_US.UTF-8
 
 RUN apt-get update \
     && apt-get update >/dev/null \
-    && apt-get install -y nginx git zip unzip curl build-essential python make g++ libfontconfig software-properties-common rsync acl zlib1g-dev apt-utils sqlite3 libsqlite3-dev
+    && apt-get install -y nginx git zip unzip curl build-essential python make g++ libfontconfig \
+    software-properties-common rsync acl zlib1g-dev apt-utils sqlite3 libsqlite3-dev supervisor
 
 # Install NodeJS
 
@@ -73,6 +74,7 @@ COPY nginx-default /etc/nginx/sites-available/default
 COPY php-fpm.conf /etc/php/$PHP_VERSION/fpm/php-fpm.conf
 COPY php.ini /etc/php/$PHP_VERSION/fpm/conf.d/99-php.ini
 COPY xdebug.ini /etc/php/$PHP_VERSION/mods-available/xdebug.ini
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Install Deployer
 
@@ -107,7 +109,11 @@ RUN npm i -g gulp
 # Install Puppeteer depedencies
 
 RUN apt-get update \
-    && apt-get -y install gconf-service libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget
+    && apt-get -y install gconf-service libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 \
+    libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 \
+    libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 \
+    libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 \
+    libnss3 lsb-release xdg-utils wget
 
 # Install Puppeteer
 
@@ -115,3 +121,5 @@ RUN npm i -g puppeteer --unsafe-perm=true
 
 # Set command-line version of PHP to preferred version
 RUN update-alternatives --set php /usr/bin/php$PHP_VERSION
+
+CMD ["/usr/bin/supervisord"]
