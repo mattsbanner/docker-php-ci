@@ -111,7 +111,7 @@ RUN apt-get update \
 
 # Install Puppeteer
 
-RUN npm i -g puppeteer
+RUN npm i -g puppeteer --unsafe-perm=true
 
 # Set command-line version of PHP to preferred version
 RUN update-alternatives --set php /usr/bin/php$PHP_VERSION
