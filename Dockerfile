@@ -76,6 +76,11 @@ COPY php.ini /etc/php/$PHP_VERSION/fpm/conf.d/99-php.ini
 COPY xdebug.ini /etc/php/$PHP_VERSION/mods-available/xdebug.ini
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
+# Update config files with the PHP version
+
+RUN sed -i s/%%PHP_VERSION%%/$PHP_VERSION/g /etc/php/$PHP_VERSION/fpm/php-fpm.conf
+RUN sed -i s/%%PHP_VERSION%%/$PHP_VERSION/g /etc/supervisor/conf.d/supervisord.conf
+
 # Install Deployer
 
 RUN curl -LO https://deployer.org/deployer.phar \
