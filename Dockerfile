@@ -80,6 +80,7 @@ COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 RUN sed -i s/%%PHP_VERSION%%/$PHP_VERSION/g /etc/php/$PHP_VERSION/fpm/php-fpm.conf
 RUN sed -i s/%%PHP_VERSION%%/$PHP_VERSION/g /etc/supervisor/conf.d/supervisord.conf
+RUN sed -i s/%%PHP_VERSION%%/$PHP_VERSION/g /etc/nginx/sites-available/default
 
 # Install Deployer
 
