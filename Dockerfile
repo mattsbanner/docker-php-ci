@@ -56,6 +56,7 @@ RUN add-apt-repository -y ppa:ondrej/php \
         php$PHP_VERSION-xml \
         php$PHP_VERSION-gd \
         php$PHP_VERSION-sqlite3 \
+        php$PHP_VERSION-bcmath \
         php-mongodb \
     && pecl install imagick \
     && php -r "readfile('https://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer --version=${COMPOSER_VERSION} \
