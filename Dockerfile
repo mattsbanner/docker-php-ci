@@ -9,7 +9,7 @@ ENV COMPOSER_ALLOW_SUPERUSER 1
 
 ENV COMPOSER_VERSION 1.6.5
 ENV NODE_VERSION 9.x
-ENV PHP_VERSION 7.1
+ENV PHP_VERSION 7.2
 
 # Base setup and install dependencies
 
@@ -68,6 +68,8 @@ RUN add-apt-repository -y ppa:ondrej/php \
     && echo "daemon off;" >> /etc/nginx/nginx.conf \
     && ln -sf /dev/stdout /var/log/nginx/access.log \
     && ln -sf /dev/stderr /var/log/nginx/error.log
+
+RUN apt-get -y install gcc make autoconf libc-dev pkg-config && apt-get -y install libmcrypt-dev && pecl install mcrypt-1.0.1
 
 # Copy config files into position
 
