@@ -37,7 +37,8 @@ CMD [ "node" ]
 
 # Install PHP, Composer, PHP extensions and configure Nginx
 
-RUN add-apt-repository -y ppa:ondrej/php \
+RUN add-apt-repository -y universe \
+    && add-apt-repository -y ppa:ondrej/php \
     && apt-get update \
     && apt-get install -y \
         php$PHP_VERSION-fpm \
@@ -58,7 +59,13 @@ RUN add-apt-repository -y ppa:ondrej/php \
         php$PHP_VERSION-sqlite3 \
         php$PHP_VERSION-bcmath \
         php-mongodb \
-    && pecl install imagick \
+        gcc \
+        make \
+        autoconf \
+        libc-dev \
+        pkg-config \
+        libmcrypt-dev \
+    && pecl install imagick mcrypt-1.0.1 \
     && php -r "readfile('https://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer --version=${COMPOSER_VERSION} \
     && mkdir /run/php \
     && apt-get remove -y --purge software-properties-common \
@@ -68,8 +75,6 @@ RUN add-apt-repository -y ppa:ondrej/php \
     && echo "daemon off;" >> /etc/nginx/nginx.conf \
     && ln -sf /dev/stdout /var/log/nginx/access.log \
     && ln -sf /dev/stderr /var/log/nginx/error.log
-
-RUN apt-get -y install gcc make autoconf libc-dev pkg-config && apt-get -y install libmcrypt-dev && pecl install mcrypt-1.0.1
 
 # Copy config files into position
 
