@@ -116,6 +116,10 @@ RUN composer global require aws/aws-sdk-php
 
 RUN composer global require symfony/polyfill-iconv
 
+# Update NPM to the latest version
+
+RUN npm i -g npm@latest
+
 # Install Gulp.js globally
 
 RUN npm i -g gulp
