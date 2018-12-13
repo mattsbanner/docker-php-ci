@@ -137,9 +137,9 @@ RUN apt-get update \
     libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 \
     libnss3 lsb-release xdg-utils wget
 
-# Install Puppeteer
+# Install Puppeteer (at a version that matches Penthouse for faster builds)
 
-RUN npm i -g puppeteer --unsafe-perm=true
+RUN npm i -g puppeteer@1.10.0 --unsafe-perm=true
 
 # Set command-line version of PHP to preferred version
 RUN update-alternatives --set php /usr/bin/php$PHP_VERSION
