@@ -144,13 +144,13 @@ RUN apt-get update \
 # Install our build script dependencies globally to speed up CI builds
 
 RUN npm i -g puppeteer@1.10.0 --unsafe-perm=true
-RUN npm i -g phantomjs-prebuilt@2.1.16
-RUN npm i -g cwebp-bin@3.2.0
-RUN npm i -g node-sass@4.10.0
-RUN npm i -g optipng-bin@5.0.0
-RUN npm i -g jpegtran-bin@4.0.0
-RUN npm i -g gifsicle@4.0.1
-RUN npm i -g fsevents@1.2.4
+RUN npm i -g phantomjs-prebuilt@2.1.16 --unsafe-perm=true
+RUN npm i -g cwebp-bin@3.2.0 --unsafe-perm=true
+RUN npm i -g node-sass@4.10.0 --unsafe-perm=true
+RUN npm i -g optipng-bin@5.0.0 --unsafe-perm=true
+RUN npm i -g jpegtran-bin@4.0.0 --unsafe-perm=true
+RUN npm i -g gifsicle@4.0.1 --unsafe-perm=true
+RUN npm i -g fsevents@1.2.4 --unsafe-perm=true
 
 # Set command-line version of PHP to preferred version
 RUN update-alternatives --set php /usr/bin/php$PHP_VERSION
