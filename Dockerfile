@@ -116,6 +116,10 @@ RUN composer global require aws/aws-sdk-php
 
 RUN composer global require symfony/polyfill-iconv
 
+# Install Prestissimo to speed up composer package installation
+
+RUN composer global require hirak/prestissimo
+
 # Update NPM to the latest version
 
 RUN npm i -g npm@latest
