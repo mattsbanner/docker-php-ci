@@ -58,6 +58,7 @@ RUN add-apt-repository -y universe \
         php$PHP_VERSION-gd \
         php$PHP_VERSION-sqlite3 \
         php$PHP_VERSION-bcmath \
+        php$PHP_VERSION-soap \
         php-mongodb \
         gcc \
         make \
