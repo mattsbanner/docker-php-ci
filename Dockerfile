@@ -129,6 +129,10 @@ RUN npm i -g npm@latest
 
 RUN npm i -g gulp
 
+# Install Yarn globally
+
+RUN npm i -g yarn
+
 # Install Puppeteer depedencies
 
 RUN apt-get update \
