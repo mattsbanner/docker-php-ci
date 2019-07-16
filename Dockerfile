@@ -142,13 +142,9 @@ RUN apt-get update \
     libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 \
     libnss3 lsb-release xdg-utils wget
 
-# Install Puppeteer (at a version that matches Penthouse for faster builds)
-
-# RUN npm i -g puppeteer@1.10.0 --unsafe-perm=true
-
 # Install our build script dependencies globally to speed up CI builds
 
-RUN npm i -g puppeteer@1.10.0 --unsafe-perm=true
+RUN npm i -g puppeteer@1.13.0 --unsafe-perm=true
 RUN npm i -g phantomjs-prebuilt@2.1.16 --unsafe-perm=true
 RUN npm i -g cwebp-bin@3.2.0 --unsafe-perm=true
 RUN npm i -g node-sass@4.10.0 --unsafe-perm=true
