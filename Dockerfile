@@ -133,6 +133,10 @@ RUN npm i -g gulp
 
 RUN npm i -g yarn
 
+# Install Google Lighthouse globally
+
+RUN npm i -g lighthouse
+
 # Install Puppeteer depedencies
 
 RUN apt-get update \
