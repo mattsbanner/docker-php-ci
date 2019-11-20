@@ -1,6 +1,6 @@
 FROM ubuntu:16.04
 
-MAINTAINER Enovate Design Ltd (Michael Walsh)
+LABEL maintainer = "Enovate Design Ltd (Michael Walsh)"
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV COMPOSER_ALLOW_SUPERUSER 1
@@ -133,10 +133,6 @@ RUN npm i -g gulp
 
 RUN npm i -g yarn
 
-# Install Google Lighthouse globally
-
-RUN npm i -g lighthouse
-
 # Install Puppeteer depedencies
 
 RUN apt-get update \
@@ -145,6 +141,15 @@ RUN apt-get update \
     libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 \
     libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 \
     libnss3 lsb-release xdg-utils wget
+
+# Install Google Chrome
+
+RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
+	&& echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
+	&& apt-get update -qqy \
+	&& apt-get -qqy install google-chrome-stable \
+	&& rm /etc/apt/sources.list.d/google-chrome.list \
+	&& sed -i 's/"$HERE\/chrome"/"$HERE\/chrome" --no-sandbox/g' /opt/google/chrome/google-chrome
 
 # Install our build script dependencies globally to speed up CI builds
 
@@ -155,9 +160,13 @@ RUN npm i -g node-sass@4.10.0 --unsafe-perm=true
 RUN npm i -g optipng-bin@5.0.0 --unsafe-perm=true
 RUN npm i -g jpegtran-bin@4.0.0 --unsafe-perm=true
 RUN npm i -g gifsicle@4.0.1 --unsafe-perm=true
+RUN npm i -g lighthouse --unsafe-perm=true
 
 # Set command-line version of PHP to preferred version
 RUN update-alternatives --set php /usr/bin/php$PHP_VERSION
+
+# Cleanup
+RUN rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
 COPY start.sh /start.sh
 RUN chmod +x /start.sh
