@@ -161,6 +161,7 @@ RUN npm i -g optipng-bin@5.0.0 --unsafe-perm=true
 RUN npm i -g jpegtran-bin@4.0.0 --unsafe-perm=true
 RUN npm i -g gifsicle@4.0.1 --unsafe-perm=true
 RUN npm i -g lighthouse --unsafe-perm=true
+RUN npm i -g lhci --unsafe-perm=true
 
 # Set command-line version of PHP to preferred version
 RUN update-alternatives --set php /usr/bin/php$PHP_VERSION
