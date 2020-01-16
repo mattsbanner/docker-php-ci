@@ -110,6 +110,7 @@ RUN curl -LO https://codeception.com/codecept.phar \
     && chmod +x /usr/local/bin/codecept
 
 # Set command-line version of PHP to preferred version
+
 RUN update-alternatives --set php /usr/bin/php$PHP_VERSION
 
 # Install AWS SDK PHP globally via Composer
