@@ -103,7 +103,7 @@ RUN curl -LO https://phar.phpunit.de/phpunit-7.phar \
     && mv phpunit-7.phar /usr/local/bin/phpunit \
     && chmod +x /usr/local/bin/phpunit
 
-# Install Codeception
+# Install Codeception (backwards compatibility)
 
 RUN curl -LO https://codeception.com/codecept.phar \
     && mv codecept.phar /usr/local/bin/codecept \
@@ -112,6 +112,12 @@ RUN curl -LO https://codeception.com/codecept.phar \
 # Set command-line version of PHP to preferred version
 
 RUN update-alternatives --set php /usr/bin/php$PHP_VERSION
+
+# Install Codeception via Composer
+
+RUN composer global require codeception/codeception \
+    && composer global require codeception/module-asserts \
+    && composer global require codeception/module-phpbrowser
 
 # Install AWS SDK PHP globally via Composer
 
