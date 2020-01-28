@@ -43,11 +43,11 @@ RUN add-apt-repository -y universe \
     && apt-get install -y \
         php$PHP_VERSION-fpm \
         php-pear \
-        php-intl \
         libmagickwand-dev \
         imagemagick \
         php-dev \
         php-xml \
+        php$PHP_VERSION-intl \
         php$PHP_VERSION-xdebug \
         php$PHP_VERSION-curl \
         php$PHP_VERSION-dev \
