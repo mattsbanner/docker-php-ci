@@ -1,6 +1,6 @@
 FROM ubuntu:18.04
 
-LABEL maintainer = "Enovate Design Ltd (Michael Walsh)"
+LABEL maintainer = "Matt Banner <matt@banner.wtf>"
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV COMPOSER_ALLOW_SUPERUSER 1
