@@ -5,47 +5,41 @@ name: image build
 steps:
 
   - name: build latest
-    image: docker:19.03.1
+    image: plugins/docker
+    environment:
+      DOCKERHUB_ACCESS_TOKEN:
+        from_secret: DOCKERHUB_ACCESS_TOKEN
     when:
       branch: master
-    volumes:
-      - name: docker_sock
-        path: /var/run/docker.sock
-    environment:
-      DOCKERHUB_ACCESS_TOKEN:
-        from_secret: DOCKERHUB_ACCESS_TOKEN
-    commands:
-      - docker login -u bannerbot -p $DOCKERHUB_ACCESS_TOKEN
-      - docker build -t mattbanner/php-ci:latest .
-      - docker push mattbanner/php-ci:latest
+    settings:
+      username: bannerbot
+      password: $DOCKERHUB_ACCESS_TOKEN
+      repo: mattbanner/php-ci
+      tags: latest
 
   - name: build develop
-    image: docker:19.03.1
-    when:
-      branch: develop
-    volumes:
-      - name: docker_sock
-        path: /var/run/docker.sock
+    image: plugins/docker
     environment:
       DOCKERHUB_ACCESS_TOKEN:
         from_secret: DOCKERHUB_ACCESS_TOKEN
-    commands:
-      - docker login -u bannerbot -p $DOCKERHUB_ACCESS_TOKEN
-      - docker build -t mattbanner/php-ci:develop .
-      - docker push mattbanner/php-ci:develop
+    when:
+      branch: develop
+    settings:
+      username: bannerbot
+      password: $DOCKERHUB_ACCESS_TOKEN
+      repo: mattbanner/php-ci
+      tags: develop
 
   - name: build release
-    image: docker:19.03.1
+    image: plugins/docker
+    environment:
+      DOCKERHUB_ACCESS_TOKEN:
+        from_secret: DOCKERHUB_ACCESS_TOKEN
     when:
       ref:
         - refs/tags/*
-    volumes:
-      - name: docker_sock
-        path: /var/run/docker.sock
-    environment:
-      DOCKERHUB_ACCESS_TOKEN:
-        from_secret: DOCKERHUB_ACCESS_TOKEN
-    commands:
-      - docker login -u bannerbot -p $DOCKERHUB_ACCESS_TOKEN
-      - docker build -t mattbanner/php-ci:$DRONE_TAG .
-      - docker push mattbanner/php-ci:$DRONE_TAG
+    settings:
+      username: bannerbot
+      password: $DOCKERHUB_ACCESS_TOKEN
+      repo: mattbanner/php-ci
+      tags: $DRONE_TAG
