@@ -1,0 +1,42 @@
+kind: pipeline
+type: docker
+name: image build
+
+steps:
+
+  - name: build latest
+    image: docker:19.03.1
+    when:
+      branch: master
+    environment:
+      DOCKERHUB_ACCESS_TOKEN:
+        from_secret: DOCKERHUB_ACCESS_TOKEN
+    commands:
+      - docker login -u bannerbot -p $DOCKERHUB_ACCESS_TOKEN
+      - docker build -t mattbanner/php-ci:latest .
+      - docker push mattbanner/php-ci:latest
+
+  - name: build develop
+    image: docker:19.03.1
+    when:
+      branch: develop
+    environment:
+      DOCKERHUB_ACCESS_TOKEN:
+        from_secret: DOCKERHUB_ACCESS_TOKEN
+    commands:
+      - docker login -u bannerbot -p $DOCKERHUB_ACCESS_TOKEN
+      - docker build -t mattbanner/php-ci:develop .
+      - docker push mattbanner/php-ci:develop
+
+  - name: build release
+    image: docker:19.03.1
+    when:
+      ref:
+        - refs/tags/*
+    environment:
+      DOCKERHUB_ACCESS_TOKEN:
+        from_secret: DOCKERHUB_ACCESS_TOKEN
+    commands:
+      - docker login -u bannerbot -p $DOCKERHUB_ACCESS_TOKEN
+      - docker build -t mattbanner/php-ci:$DRONE_TAG .
+      - docker push mattbanner/php-ci:$DRONE_TAG
