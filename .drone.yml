@@ -8,6 +8,9 @@ steps:
     image: docker:19.03.1
     when:
       branch: master
+    volumes:
+      - name: docker_sock
+        path: /var/run/docker.sock
     environment:
       DOCKERHUB_ACCESS_TOKEN:
         from_secret: DOCKERHUB_ACCESS_TOKEN
@@ -20,6 +23,9 @@ steps:
     image: docker:19.03.1
     when:
       branch: develop
+    volumes:
+      - name: docker_sock
+        path: /var/run/docker.sock
     environment:
       DOCKERHUB_ACCESS_TOKEN:
         from_secret: DOCKERHUB_ACCESS_TOKEN
@@ -33,6 +39,9 @@ steps:
     when:
       ref:
         - refs/tags/*
+    volumes:
+      - name: docker_sock
+        path: /var/run/docker.sock
     environment:
       DOCKERHUB_ACCESS_TOKEN:
         from_secret: DOCKERHUB_ACCESS_TOKEN
