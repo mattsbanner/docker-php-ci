@@ -105,6 +105,11 @@ RUN composer global require hirak/prestissimo
 
 RUN npm i -g npm@latest
 
+# Install the AWS CLI
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
+&& unzip awscliv2.zip \
+&& ./aws/install
+
 # Cleanup
 RUN apt-get remove -y --purge software-properties-common \
     && apt-get -y autoremove \
