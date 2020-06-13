@@ -23,7 +23,7 @@ ENV LC_ALL en_US.UTF-8
 
 RUN apt-get update \
     && apt-get update >/dev/null \
-    && apt-get install -y nginx git zip unzip curl build-essential python make g++ libfontconfig \
+    && apt-get install -y nginx git zip unzip curl wget build-essential python make g++ libfontconfig \
     software-properties-common rsync acl zlib1g-dev apt-utils sqlite3 libsqlite3-dev supervisor
 
 # Install NodeJS
