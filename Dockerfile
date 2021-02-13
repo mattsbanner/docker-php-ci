@@ -23,7 +23,7 @@ ENV LC_ALL en_US.UTF-8
 
 RUN apt-get update \
     && apt-get update >/dev/null \
-    && apt-get install -y nginx git zip unzip curl build-essential python make g++ libfontconfig \
+    && apt-get install -y nginx git zip unzip curl wget build-essential python make g++ libfontconfig \
     software-properties-common rsync acl zlib1g-dev apt-utils sqlite3 libsqlite3-dev supervisor
 
 # Install NodeJS
@@ -69,10 +69,6 @@ RUN add-apt-repository -y universe \
     && pecl install imagick mcrypt-1.0.1 \
     && php -r "readfile('https://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer --version=${COMPOSER_VERSION} \
     && mkdir /run/php \
-    && apt-get remove -y --purge software-properties-common \
-    && apt-get -y autoremove \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
     && echo "daemon off;" >> /etc/nginx/nginx.conf \
     && ln -sf /dev/stdout /var/log/nginx/access.log \
     && ln -sf /dev/stderr /var/log/nginx/error.log
@@ -97,35 +93,9 @@ RUN curl -LO https://deployer.org/deployer.phar \
     && mv deployer.phar /usr/local/bin/dep \
     && chmod +x /usr/local/bin/dep
 
-# Install PHPUnit
-
-RUN curl -LO https://phar.phpunit.de/phpunit-7.phar \
-    && mv phpunit-7.phar /usr/local/bin/phpunit \
-    && chmod +x /usr/local/bin/phpunit
-
-# Install Codeception (backwards compatibility)
-
-RUN curl -LO https://codeception.com/codecept.phar \
-    && mv codecept.phar /usr/local/bin/codecept \
-    && chmod +x /usr/local/bin/codecept
-
 # Set command-line version of PHP to preferred version
 
 RUN update-alternatives --set php /usr/bin/php$PHP_VERSION
-
-# Install Codeception via Composer
-
-RUN composer global require codeception/codeception \
-    && composer global require codeception/module-asserts \
-    && composer global require codeception/module-phpbrowser
-
-# Install AWS SDK PHP globally via Composer
-
-RUN composer global require aws/aws-sdk-php
-
-# Install Iconv polyfill globally
-
-RUN composer global require symfony/polyfill-iconv
 
 # Install Prestissimo to speed up composer package installation
 
@@ -135,45 +105,16 @@ RUN composer global require hirak/prestissimo
 
 RUN npm i -g npm@latest
 
-# Install Gulp.js globally
-
-RUN npm i -g gulp
-
-# Install Yarn globally
-
-RUN npm i -g yarn
-
-# Install Puppeteer depedencies
-
-RUN apt-get update \
-    && apt-get -y install gconf-service libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 \
-    libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 \
-    libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 \
-    libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 \
-    libnss3 lsb-release xdg-utils wget
-
-# Install Google Chrome
-
-RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
-	&& echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
-	&& apt-get update -qqy \
-	&& apt-get -qqy install google-chrome-stable \
-	&& rm /etc/apt/sources.list.d/google-chrome.list \
-	&& sed -i 's/"$HERE\/chrome"/"$HERE\/chrome" --no-sandbox/g' /opt/google/chrome/google-chrome
-
-# Install our build script dependencies globally to speed up CI builds
-
-RUN npm i -g puppeteer@1.13.0 --unsafe-perm=true
-RUN npm i -g phantomjs-prebuilt@2.1.16 --unsafe-perm=true
-RUN npm i -g cwebp-bin@3.2.0 --unsafe-perm=true
-RUN npm i -g node-sass@4.10.0 --unsafe-perm=true
-RUN npm i -g optipng-bin@5.0.0 --unsafe-perm=true
-RUN npm i -g jpegtran-bin@4.0.0 --unsafe-perm=true
-RUN npm i -g gifsicle@4.0.1 --unsafe-perm=true
-RUN npm i -g @lhci/cli@0.3.x --unsafe-perm=true
+# Install the AWS CLI
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
+&& unzip awscliv2.zip \
+&& ./aws/install
 
 # Cleanup
-RUN rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+RUN apt-get remove -y --purge software-properties-common \
+    && apt-get -y autoremove \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/apt/*
 
 COPY start.sh /start.sh
 RUN chmod +x /start.sh
