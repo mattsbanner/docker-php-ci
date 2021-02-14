@@ -59,6 +59,7 @@ RUN add-apt-repository -y universe \
         php$PHP_VERSION-sqlite3 \
         php$PHP_VERSION-bcmath \
         php$PHP_VERSION-soap \
+        php$PHP_VERSION-imagick \
         php-mongodb \
         gcc \
         make \
@@ -66,7 +67,6 @@ RUN add-apt-repository -y universe \
         libc-dev \
         pkg-config \
         libmcrypt-dev \
-    && pecl install imagick mcrypt-1.0.1 \
     && php -r "readfile('https://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer --version=${COMPOSER_VERSION} \
     && mkdir /run/php \
     && echo "daemon off;" >> /etc/nginx/nginx.conf \
