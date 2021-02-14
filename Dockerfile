@@ -97,10 +97,6 @@ RUN curl -LO https://deployer.org/deployer.phar \
 
 RUN update-alternatives --set php /usr/bin/php$PHP_VERSION
 
-# Install Prestissimo to speed up composer package installation
-
-RUN composer global require hirak/prestissimo
-
 # Update NPM to the latest version
 
 RUN npm i -g npm@latest
